@@ -1,0 +1,14 @@
+name: Question
+description: Ask a question
+labels:
+  - question
+body:
+  - type: markdown
+    attributes:
+      value: '# Question'
+  - type: textarea
+    attributes:
+      label: Question
+      placeholder: What is your question?
+    validations:
+      required: true

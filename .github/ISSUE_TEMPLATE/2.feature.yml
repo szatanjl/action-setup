@@ -1,0 +1,22 @@
+name: Feature Request
+description: Request a feature
+labels:
+  - feature
+body:
+  - type: markdown
+    attributes:
+      value: '# Feature Request'
+  - type: textarea
+    attributes:
+      label: Description
+      placeholder: Description of the feature
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Context
+      placeholder: |
+        What are you trying to achieve?
+        Why do you need the feature?
+    validations:
+      required: true
