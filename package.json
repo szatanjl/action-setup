@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"private": true,
 	"dependencies": {
+		"@actions/core": "1"
 	},
 	"devDependencies": {
 		"es-check": "7"

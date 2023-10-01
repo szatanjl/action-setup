@@ -1,11 +1,16 @@
 name: Test
-run-name: Test
+run-name: Test -- ${{ inputs.commit }}
 permissions:
   contents: read
 
 
 on:
   workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit to test
+        type: string
+        required: true
 
 
 jobs:
@@ -14,19 +19,94 @@ jobs:
     name: Test Linux
     runs-on: ubuntu-latest
     steps:
+      - name: Before
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+      - name: After
+        run: ls -A .
 
   windows:
     name: Test Windows
     runs-on: windows-latest
     steps:
+      - name: Before
+        shell: bash
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+      - name: After
+        shell: bash
+        run: ls -A .
 
   macos:
     name: Test MacOS
     runs-on: macos-latest
     steps:
+      - name: Before
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+      - name: After
+        run: ls -A .
+
+  checkout-dir:
+    name: Test Changing Checkout Directory
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          checkout: src
+      - name: After
+        run: ls -A . src
+
+  checkout-none:
+    name: Test Setup Without Checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          checkout:
+      - name: After
+        run: ls -A .
+
+  checkout-invalid-commit:
+    name: Test Checkout of Invalid Commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: invalid-1234567890
+      - name: After
+        run: ls -A .
+
+  checkout-invalid-url:
+    name: Test Checkout of Invalid URL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          repo-url: https://example.com/invalid.git
+      - name: After
+        run: ls -A .

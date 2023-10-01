@@ -1,6 +1,18 @@
 name: Setup
 description: Set Up Job
 
+inputs:
+  commit:
+    description: Commit hash
+    required: true
+  checkout-dir:
+    description: >
+      Directory to checkout project to.  Empty means skip checkout.
+    default: .
+  checkout-url:
+    description: Repository URL to checkout.  Empty means skip checkout.
+    default: https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git
+
 runs:
   using: node20
   main: main.js
