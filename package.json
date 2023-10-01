@@ -8,10 +8,13 @@
 	},
 	"devDependencies": {
 		"@vercel/ncc": "0.38",
+		"es-check": "7",
 		"rimraf": "5"
 	},
 	"scripts": {
 		"build": "ncc build -o dist/main main.js",
+		"lint": "es-check --allow-hash-bang es6 main.js",
+		"lint:build": "es-check --allow-hash-bang es6 dist/main/index.js",
 		"clean": "rimraf dist"
 	}
 }
