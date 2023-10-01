@@ -1,0 +1,13 @@
+{
+	"name": "action-setup",
+	"version": "0.0.0",
+	"description": "GitHub Actions - Setup",
+	"license": "MIT",
+	"private": true,
+	"dependencies": {
+	},
+	"devDependencies": {
+	},
+	"scripts": {
+	}
+}
