@@ -1,0 +1,12 @@
+name: Setup
+description: Set Up Job
+
+runs:
+  using: composite
+  steps:
+    - uses: szatanjl/action-setup/main@main
+    - uses: szatanjl/action-setup/on-success@main
+    - uses: szatanjl/action-setup/on-failure@main
+    - uses: szatanjl/action-setup/on-cancelled@main
+    - if: (!success())
+      uses: szatanjl/action-setup/on-error@main

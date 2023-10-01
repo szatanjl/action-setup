@@ -1,0 +1,8 @@
+name: Setup - success
+description: Complete Job in Case of Success
+
+runs:
+  using: node20
+  main: main.js
+  post-if: success()
+  post: post.js

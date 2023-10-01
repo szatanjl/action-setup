@@ -1,0 +1,90 @@
+name: Test
+run-name: Test
+permissions:
+  contents: read
+
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+
+  linux:
+    name: Test Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: echo 'Post-setup'
+
+  windows:
+    name: Test Windows
+    runs-on: windows-latest
+    steps:
+      - name: Pre-setup
+        shell: bash
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        shell: bash
+        run: echo 'Post-setup'
+
+  macos:
+    name: Test MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Pre-setup
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: echo 'Post-setup'
+
+  on-failure-after:
+    name: Test When Job Fails After Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: false
+
+  on-failure-before:
+    name: Test When Job Fails Before Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: false
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: echo 'Post-setup'
+
+  on-cancelled-after:
+    name: Test When Job Is Cancelled After Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: sleep 300
+
+  on-cancelled-before:
+    name: Test When Job Is Cancelled Before Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: sleep 300
+      - name: Setup
+        uses: szatanjl/action-setup@main
+      - name: Post-setup
+        run: echo 'Post-setup'

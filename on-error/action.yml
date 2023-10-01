@@ -1,0 +1,7 @@
+name: Setup - error
+description: Complete Job in Case of Error
+
+runs:
+  using: node20
+  main: main.js
+  post: post.js

@@ -1,0 +1,8 @@
+name: Setup - failure
+description: Complete Job in Case of Failure
+
+runs:
+  using: node20
+  main: main.js
+  post-if: failure()
+  post: post.js
