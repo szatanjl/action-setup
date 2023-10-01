@@ -7,7 +7,11 @@
 	"dependencies": {
 	},
 	"devDependencies": {
+		"@vercel/ncc": "0.38",
+		"rimraf": "5"
 	},
 	"scripts": {
+		"build": "ncc build -o dist/main main.js",
+		"clean": "rimraf dist"
 	}
 }

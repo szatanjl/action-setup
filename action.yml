@@ -3,4 +3,4 @@ description: Set Up Job
 
 runs:
   using: node20
-  main: main.js
+  main: dist/main/index.js
