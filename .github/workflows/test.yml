@@ -1,0 +1,32 @@
+name: Test
+run-name: Test
+permissions:
+  contents: read
+
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+
+  linux:
+    name: Test Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+
+  windows:
+    name: Test Windows
+    runs-on: windows-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+
+  macos:
+    name: Test MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
