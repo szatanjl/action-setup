@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log("Cancelled");
+const { setStatus } = require("#lib");
+
+setStatus("error");

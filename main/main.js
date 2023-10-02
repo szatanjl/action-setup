@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log("Hello world!");
+const { setStatus } = require("#lib");
+
+setStatus("pending");

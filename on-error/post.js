@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log("Error");
+const { setStatus } = require("#lib");
+
+setStatus("error");

@@ -1,12 +1,58 @@
 name: Setup
 description: Set Up Job
 
+
+inputs:
+  commit:
+    description: Commit
+    required: true
+  name:
+    description: Status name
+    required: true
+  description:
+    description: Status description
+    required: true
+  token:
+    description: GitHub access token
+    default: ${{ github.token }}
+
+
 runs:
   using: composite
   steps:
+
     - uses: szatanjl/action-setup/main@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        token: ${{ inputs.token }}
+
     - uses: szatanjl/action-setup/on-success@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        token: ${{ inputs.token }}
+
     - uses: szatanjl/action-setup/on-failure@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        token: ${{ inputs.token }}
+
     - uses: szatanjl/action-setup/on-cancelled@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        token: ${{ inputs.token }}
+
     - if: (!success())
       uses: szatanjl/action-setup/on-error@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        token: ${{ inputs.token }}

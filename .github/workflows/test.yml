@@ -1,11 +1,17 @@
 name: Test
-run-name: Test
+run-name: Test -- ${{ inputs.commit }}
 permissions:
   contents: read
+  statuses: write
 
 
 on:
   workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit
+        type: string
+        required: true
 
 
 jobs:
@@ -18,6 +24,10 @@ jobs:
         run: echo 'Pre-setup'
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: linux
+          description: Test Linux
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -30,6 +40,10 @@ jobs:
         run: echo 'Pre-setup'
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: windows
+          description: Test Windows
       - name: Post-setup
         shell: bash
         run: echo 'Post-setup'
@@ -42,6 +56,10 @@ jobs:
         run: echo 'Pre-setup'
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: macos
+          description: Test MacOS
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -53,6 +71,10 @@ jobs:
         run: echo 'Pre-setup'
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: on-failure-after
+          description: Test When Job Fails After Setup
       - name: Post-setup
         run: false
 
@@ -64,6 +86,10 @@ jobs:
         run: false
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: on-failure-before
+          description: Test When Job Fails Before Setup
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -75,6 +101,10 @@ jobs:
         run: echo 'Pre-setup'
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: on-cancelled-after
+          description: Test When Job Is Cancelled After Setup
       - name: Post-setup
         run: sleep 300
 
@@ -86,5 +116,36 @@ jobs:
         run: sleep 300
       - name: Setup
         uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: on-cancelled-before
+          description: Test When Job Is Cancelled Before Setup
+      - name: Post-setup
+        run: echo 'Post-setup'
+
+  test-statuses:
+    name: Test Statuses
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-statuses
+          description: Test Statuses
+      - run: sleep 30
+
+  invalid-commit:
+    name: Test Invalid Commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: echo 'Pre-setup'
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: invalid-commit
+          name: test-invalid-commit
+          description: Test Invalid Commit
       - name: Post-setup
         run: echo 'Post-setup'
