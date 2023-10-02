@@ -1,0 +1,7 @@
+# Ignore dependencies
+/node_modules
+
+# Ignore package managers (npm, yarn) files
+/package-lock.json
+/yarn.lock
+/yarn-error.log
