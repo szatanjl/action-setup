@@ -11,6 +11,6 @@
 		"es-check": "7"
 	},
 	"scripts": {
-		"lint": "es-check --allow-hash-bang es6 main.js"
+		"lint": "es-check --allow-hash-bang es6 pre.js main.js post.js"
 	}
 }

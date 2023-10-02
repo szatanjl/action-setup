@@ -5,6 +5,12 @@ inputs:
   commit:
     description: Commit hash
     required: true
+  name:
+    description: Status name
+    required: true
+  description:
+    description: Status description
+    required: true
   checkout-dir:
     description: >
       Directory to checkout project to.  Empty means skip checkout.
@@ -15,4 +21,6 @@ inputs:
 
 runs:
   using: node20
+  pre: pre.js
   main: main.js
+  post: post.js
