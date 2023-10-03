@@ -12,44 +12,56 @@ inputs:
   description:
     description: Status description
     required: true
+  force:
+    description: Force rerun
+    default: false
   token:
     description: GitHub access token
     default: ${{ github.token }}
+outputs:
+  has-already-run:
+    description: Has job already run?
+    value: ${{ steps.main.outputs.has-already-run }}
 
 
 runs:
   using: composite
   steps:
 
-    - uses: szatanjl/action-setup/main@main
+    - id: main
+      uses: szatanjl/action-setup/main@main
+      with:
+        commit: ${{ inputs.commit }}
+        name: ${{ inputs.name }}
+        description: ${{ inputs.description }}
+        force: ${{ inputs.force }}
+        token: ${{ inputs.token }}
+
+    - if: (!steps.main.outputs.has-already-run)
+      uses: szatanjl/action-setup/on-success@main
       with:
         commit: ${{ inputs.commit }}
         name: ${{ inputs.name }}
         description: ${{ inputs.description }}
         token: ${{ inputs.token }}
 
-    - uses: szatanjl/action-setup/on-success@main
+    - if: (!steps.main.outputs.has-already-run)
+      uses: szatanjl/action-setup/on-failure@main
       with:
         commit: ${{ inputs.commit }}
         name: ${{ inputs.name }}
         description: ${{ inputs.description }}
         token: ${{ inputs.token }}
 
-    - uses: szatanjl/action-setup/on-failure@main
+    - if: (!steps.main.outputs.has-already-run)
+      uses: szatanjl/action-setup/on-cancelled@main
       with:
         commit: ${{ inputs.commit }}
         name: ${{ inputs.name }}
         description: ${{ inputs.description }}
         token: ${{ inputs.token }}
 
-    - uses: szatanjl/action-setup/on-cancelled@main
-      with:
-        commit: ${{ inputs.commit }}
-        name: ${{ inputs.name }}
-        description: ${{ inputs.description }}
-        token: ${{ inputs.token }}
-
-    - if: (!success())
+    - if: (!steps.main.outputs.has-already-run) && (!success())
       uses: szatanjl/action-setup/on-error@main
       with:
         commit: ${{ inputs.commit }}

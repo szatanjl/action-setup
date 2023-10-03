@@ -11,9 +11,15 @@ inputs:
   description:
     description: Status description
     required: true
+  force:
+    description: Force rerun
+    default: false
   token:
     description: GitHub access token
     default: ${{ github.token }}
+outputs:
+  has-already-run:
+    description: Has job already run?
 
 runs:
   using: node20

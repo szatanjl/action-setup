@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
-const { setStatus } = require("#lib");
+const { checkIfAlreadyRun, setStatus } = require("#lib");
 
-setStatus("pending");
+checkIfAlreadyRun().then(has_already_run => {
+	if (!has_already_run) {
+		setStatus("pending");
+	}
+});
