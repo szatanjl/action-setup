@@ -11,6 +11,12 @@ inputs:
   description:
     description: Status description
     required: true
+  checkout-dir:
+    description: Checkout destination.  Skip checkout if empty
+    default: .
+  checkout-url:
+    description: Checkout URL.  Skip checkout if empty
+    default: https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git
   force:
     description: Force rerun
     default: false

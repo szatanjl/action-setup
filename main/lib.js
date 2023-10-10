@@ -1,3 +1,4 @@
+const { spawnSync } = require("node:child_process");
 const core = require("@actions/core");
 const github = require("@actions/github");
 
@@ -70,6 +71,19 @@ return _fn(`Set status: ${status}`, () => {
 });
 }
 
+function checkout()
+{
+	const dir = core.getInput("checkout-dir");
+	const url = core.getInput("checkout-url");
+
+return _fn("Checkout project", dir !== "" && url !== "", () => {
+	const commit = core.getInput("commit");
+
+	_git(["clone", "-n", "--filter=tree:0", "--progress", "--", url, dir]);
+	_git(["checkout", "--recurse-submodules", "--progress", commit, "--"], dir);
+});
+}
+
 function _fn(name, cond, fn)
 {
 	if (!cond) {
@@ -82,7 +96,23 @@ function _fn(name, cond, fn)
 	}));
 }
 
+function _git(args, cwd)
+{
+	core.info(`$ git ${args.join(" ")}`);
+
+	const opts = {
+		cwd: cwd || ".",
+		stdio: "inherit",
+	};
+	const { status, signal, error } = spawnSync("git", args, opts);
+
+	if (status !== 0 || signal != null || error != null) {
+		throw new Error(`Command failed (${status}): git ${args.join(" ")}`);
+	}
+}
+
 module.exports = {
 	checkIfAlreadyRun,
+	checkout,
 	setStatus,
 };

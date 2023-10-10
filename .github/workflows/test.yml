@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pre-setup
-        run: echo 'Pre-setup'
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
         with:
@@ -29,7 +29,7 @@ jobs:
           name: linux
           description: Test Linux
       - name: Post-setup
-        run: echo 'Post-setup'
+        run: ls -A .
 
   windows:
     name: Test Windows
@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Pre-setup
         shell: bash
-        run: echo 'Pre-setup'
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
         with:
@@ -46,14 +46,14 @@ jobs:
           description: Test Windows
       - name: Post-setup
         shell: bash
-        run: echo 'Post-setup'
+        run: ls -A .
 
   macos:
     name: Test MacOS
     runs-on: macos-latest
     steps:
       - name: Pre-setup
-        run: echo 'Pre-setup'
+        run: ls -A .
       - name: Setup
         uses: szatanjl/action-setup@main
         with:
@@ -61,7 +61,7 @@ jobs:
           name: macos
           description: Test MacOS
       - name: Post-setup
-        run: echo 'Post-setup'
+        run: ls -A .
 
   on-failure-after:
     name: Test When Job Fails After Setup
@@ -135,6 +135,38 @@ jobs:
           description: Test Statuses
       - run: sleep 30
 
+  test-checkout-dir:
+    name: Test Checkout Dir
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-checkout-dir
+          description: Test Checkout Dir
+          checkout-dir: src
+      - name: Post-setup
+        run: ls -A . src
+
+  test-no-checkout:
+    name: Test Setup Without Checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-setup
+        run: ls -A .
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-no-checkout
+          description: Test Setup Without Checkout
+          checkout-dir:
+      - name: Post-setup
+        run: ls -A .
+
   invalid-commit:
     name: Test Invalid Commit
     runs-on: ubuntu-latest
@@ -163,6 +195,7 @@ jobs:
           commit: ${{ inputs.commit }}
           name: rerun-after-success
           description: Test Rerun After Success
+      - run: ls -A .
       - name: Post-setup
         if: (!steps.setup.outputs.has-already-run)
         run: echo 'Post-setup'
@@ -181,6 +214,7 @@ jobs:
           commit: ${{ inputs.commit }}
           name: rerun-after-success
           description: Test Rerun After Success
+      - run: ls -A .
       - name: Post-setup
         if: (!steps.setup.outputs.has-already-run)
         run: echo 'Post-setup'
@@ -197,6 +231,7 @@ jobs:
           commit: ${{ inputs.commit }}
           name: rerun-after-failure
           description: Test Rerun After Failure
+      - run: ls -A .
       - name: Post-setup
         run: false
 
@@ -215,6 +250,8 @@ jobs:
           commit: ${{ inputs.commit }}
           name: rerun-after-failure
           description: Test Rerun After Failure
+      - if: always()
+        run: ls -A .
       - name: Post-setup
         if: (!steps.setup.outputs.has-already-run)
         run: echo 'Post-setup'
@@ -231,6 +268,7 @@ jobs:
           commit: ${{ inputs.commit }}
           name: rerun-force
           description: Test Force Rerun
+      - run: ls -A .
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -249,6 +287,7 @@ jobs:
           name: rerun-force
           description: Test Force Rerun
           force: true
+      - run: ls -A .
       - name: Post-setup
         if: (!steps.setup.outputs.has-already-run)
         run: echo 'Post-setup'
