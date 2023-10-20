@@ -28,6 +28,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: linux
           description: Test Linux
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: ls -A .
 
@@ -44,6 +47,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: windows
           description: Test Windows
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         shell: bash
         run: ls -A .
@@ -60,6 +66,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: macos
           description: Test MacOS
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: ls -A .
 
@@ -75,6 +84,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: on-failure-after
           description: Test When Job Fails After Setup
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: false
 
@@ -90,6 +102,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: on-failure-before
           description: Test When Job Fails Before Setup
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -105,6 +120,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: on-cancelled-after
           description: Test When Job Is Cancelled After Setup
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: sleep 300
 
@@ -120,6 +138,9 @@ jobs:
           commit: ${{ inputs.commit }}
           name: on-cancelled-before
           description: Test When Job Is Cancelled Before Setup
+          upload: |
+            README.md
+            LICENSE
       - name: Post-setup
         run: echo 'Post-setup'
 
@@ -166,6 +187,65 @@ jobs:
           checkout-dir:
       - name: Post-setup
         run: ls -A .
+
+  test-upload:
+    name: Test Upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-upload
+          description: Test Upload
+          checkout-dir:
+          upload: |
+            dir
+            empty-dir
+            file
+            symlink
+      - name: Post-setup
+        run: |
+          mkdir dir empty-dir
+          echo file > file
+          echo file > dir/file
+          ln -s file symlink
+
+  test-upload-broken-symlink:
+    name: Test Upload Broken Symlink
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-upload-broken-symlink
+          description: Test Upload Broken Symlink
+          checkout-dir:
+          upload: broken-symlink
+      - name: Post-setup
+        run: ln -s broken broken-symlink
+
+  test-upload-missing:
+    name: Test Upload Missing Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-upload-missing
+          description: Test Upload Missing Artifacts
+          checkout-dir:
+          upload: |
+            TEST1
+            README.md
+            LICENSE
+            TEST2
+      - name: Post-setup
+        run: |
+          echo TEST1 > TEST1
+          echo TEST2 > TEST2
 
   invalid-commit:
     name: Test Invalid Commit

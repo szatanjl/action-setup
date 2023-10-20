@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
-const { setStatus } = require("#lib");
+const { setStatus, uploadArtifacts } = require("#lib");
 
-setStatus("failure");
+uploadArtifacts()
+	.then(() => setStatus("failure"))
+	.catch(() => setStatus("error"));

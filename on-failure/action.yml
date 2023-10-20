@@ -6,11 +6,13 @@ inputs:
     description: Commit
     required: true
   name:
-    description: Status name
+    description: Status and artifacts name
     required: true
   description:
     description: Status description
     required: true
+  upload:
+    description: List of files to upload as artifacts
   token:
     description: GitHub access token
     default: ${{ github.token }}

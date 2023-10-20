@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"private": true,
 	"dependencies": {
+		"@actions/artifact": "1",
 		"@actions/core": "1",
 		"@actions/github": "5"
 	},

@@ -1,4 +1,6 @@
 const { spawnSync } = require("node:child_process");
+const path = require("node:path");
+const artifact = require("@actions/artifact");
 const core = require("@actions/core");
 const github = require("@actions/github");
 
@@ -84,6 +86,25 @@ return _fn("Checkout project", dir !== "" && url !== "", () => {
 });
 }
 
+function uploadArtifacts()
+{
+	const files = core.getMultilineInput("upload");
+
+return _fn("Upload artifacts", files.length > 0, () => {
+	const commit = core.getInput("commit");
+	const name = core.getInput("name");
+
+	const client = artifact.create();
+
+	return client.uploadArtifact(
+		`${commit}-${name}`,
+		files,
+		_rootDir(files),
+		{ continueOnError: false }
+	);
+});
+}
+
 function _fn(name, cond, fn)
 {
 	if (!cond) {
@@ -111,8 +132,37 @@ function _git(args, cwd)
 	}
 }
 
+function _rootDir(files)
+{
+	const prefix = files
+		.map(fname => path.normalize(fname).split(path.sep).slice(0, -1))
+		.map(path => {
+			if (path[0] === "") {
+				path[0] = "/";
+			} else {
+				path.unshift(".");
+			}
+			return path;
+		})
+		.reduce((prefix, path) => {
+			for (let i = 0; i < prefix.length; i++) {
+				if (prefix[i] !== path[i]) {
+					return prefix.slice(0, i);
+				}
+			}
+			return prefix;
+		});
+
+	if (prefix.length > 0) {
+		return path.join(...prefix);
+	}
+
+	return "/";
+}
+
 module.exports = {
 	checkIfAlreadyRun,
 	checkout,
 	setStatus,
+	uploadArtifacts,
 };
