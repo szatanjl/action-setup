@@ -3,6 +3,7 @@ const path = require("node:path");
 const artifact = require("@actions/artifact");
 const core = require("@actions/core");
 const github = require("@actions/github");
+const glob = require("@actions/glob");
 
 function checkIfAlreadyRun()
 {
@@ -88,20 +89,29 @@ return _fn("Checkout project", dir !== "" && url !== "", () => {
 
 function uploadArtifacts()
 {
-	const files = core.getMultilineInput("upload");
+	const files = core.getInput("upload");
 
-return _fn("Upload artifacts", files.length > 0, () => {
+return _fn("Upload artifacts", files !== "", () => {
 	const commit = core.getInput("commit");
 	const name = core.getInput("name");
 
 	const client = artifact.create();
 
-	return client.uploadArtifact(
-		`${commit}-${name}`,
-		files,
-		_rootDir(files),
-		{ continueOnError: false }
-	);
+	return glob.create(files)
+		.then(globber => globber.glob())
+		.then(files => {
+			if (files.length <= 0) {
+				core.warning("No artifacts uploaded");
+				return;
+			}
+
+			return client.uploadArtifact(
+				`${commit}-${name}`,
+				files,
+				_rootDir(files),
+				{ continueOnError: false }
+			);
+		});
 });
 }
 

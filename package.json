@@ -7,7 +7,8 @@
 	"dependencies": {
 		"@actions/artifact": "1",
 		"@actions/core": "1",
-		"@actions/github": "5"
+		"@actions/github": "5",
+		"@actions/glob": "0.4"
 	},
 	"devDependencies": {
 		"es-check": "7"

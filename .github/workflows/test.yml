@@ -247,6 +247,23 @@ jobs:
           echo TEST1 > TEST1
           echo TEST2 > TEST2
 
+  test-upload-glob:
+    name: Test Upload Glob
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: szatanjl/action-setup@main
+        with:
+          commit: ${{ inputs.commit }}
+          name: test-upload-glob
+          description: Test Upload Glob
+          checkout-dir:
+          upload: TEST*
+      - name: Post-setup
+        run: |
+          echo TEST1 > TEST1
+          echo TEST2 > TEST2
+
   invalid-commit:
     name: Test Invalid Commit
     runs-on: ubuntu-latest
